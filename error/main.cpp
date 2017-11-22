@@ -41,9 +41,11 @@ PAM_EXTERN int pam_sm_authenticate( pam_handle_t *pamh, int flags,int argc, cons
 
     //----------------------------------------------------------------------------------------------------------------------
     VideoCapture cap(0);
-    cap.open(0);
+    if(!cap.isOpened()) {
+        cerr << "Capture Device ID " << 0 << "cannot be opened." << endl;
+        return -1;
+    }
 
-    Mat img;
 
     // Initialize the inbuilt Harr Cascade frontal face detection
     // Below mention the path of where your haarcascade_frontalface_alt2.xml file is located
@@ -51,13 +53,15 @@ PAM_EXTERN int pam_sm_authenticate( pam_handle_t *pamh, int flags,int argc, cons
      CascadeClassifier face_cascade;
      face_cascade.load( "/home/haarcascade_frontalface_alt.xml" );
 
-
     for (;;)
     {
 
          // Image from camera to Mat
 
-         cap >> img;
+        Mat img;
+        cap >> img;
+        imwrite("/tmp/tst.jpg", img);
+        break;
 
         // obtain input image from source
         cap.retrieve(img, CV_CAP_OPENNI_BGR_IMAGE);
