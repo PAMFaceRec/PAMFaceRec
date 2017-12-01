@@ -47,16 +47,9 @@ PAM_EXTERN int pam_sm_acct_mgmt(pam_handle_t *pamh, int flags, int argc, const c
 }
 
 PAM_EXTERN int pam_sm_authenticate( pam_handle_t *pamh, int flags,int argc, const char **argv ) {
-    int retval;
-
-    const char* pUsername;
-    retval = pam_get_user(pamh, &pUsername, "Username: ");
-
-    printf("Welcome %s\n", pUsername);
-
     // Get the path to your CSV:
-    string fn_haar = string("/haarcascade_frontalface_alt.xml");
-    string fn_csv = string("/dir_train.txt");
+    string fn_haar = string("/home/kvs/haarcascade_frontalface_alt.xml");
+    string fn_csv = string("/home/kvs/training_data.txt");
     int deviceId = atoi("0");
 
     // These vectors hold the images and corresponding labels:
@@ -75,7 +68,8 @@ PAM_EXTERN int pam_sm_authenticate( pam_handle_t *pamh, int flags,int argc, cons
     int im_height = images[0].rows;
     // Create a FaceRecognizer and train it on the given images:
     Ptr<FaceRecognizer> model = LBPHFaceRecognizer::create();
-    model->setThreshold(115);
+    model->setThreshold(50);
+
     model->train(images, labels);
     // We are going to use the haar cascade you have specified in the
     // command line arguments:
@@ -88,10 +82,16 @@ PAM_EXTERN int pam_sm_authenticate( pam_handle_t *pamh, int flags,int argc, cons
         cerr << "Capture Device ID " << deviceId << "cannot be opened." << endl;
         return -1;
     }
+
+    cout << "Look at the webcam!" << endl;
+
     // Holds the current frame from the Video device:
     Mat frame;
+
+    //frame = imread("/home/kvs/test2.jpg");
+
     int count;
-    while(1000) {
+    while(100) {
         ++count;
         cap >> frame;
         // Clone the current frame:
@@ -115,40 +115,21 @@ PAM_EXTERN int pam_sm_authenticate( pam_handle_t *pamh, int flags,int argc, cons
             cv::resize(face, face_resized, Size(im_width, im_height), 1.0, 1.0, INTER_CUBIC);
             // Perform the prediction:
             int prediction = model->predict(face_resized);
-//            // Draw a green rectangle around the detected face:
-//            rectangle(original, face_i, CV_RGB(0, 255,0), 1);
-//            // Create the text we will annotate the box with:
-//            string box_text = format("Prediction = %d", prediction);
-//            // Calculate the position for annotated text
-//            // (make sure we don't put illegal values in there):
-//            int pos_x = std::max(face_i.tl().x - 10, 0);
-//            int pos_y = std::max(face_i.tl().y - 10, 0);
-//            // And now put it into the image:
-//            putText(original, box_text, Point(pos_x, pos_y), FONT_HERSHEY_PLAIN, 1.0, CV_RGB(0,255,0), 2.0);
 
-            cout << prediction << endl;
+            //cout << prediction << endl;
 
-
-            if (prediction == 3) {
-                cap.release();
+            if (prediction != -1) {
+                cout << "Success!" << endl;
+                //cap.release();
                 return PAM_SUCCESS;
             } else {
+                cout << "Failure!" << endl;
                 return PAM_PERM_DENIED;
             }
 
         }
     }
 
-
-    //----------------------------------------------------------------------------------------------------------------------
-
-//    if (retval != PAM_SUCCESS) {
-//        return retval;
-//    }
-
-//    if (strcmp(pUsername, "backdoor") != 0) {
-//        return PAM_AUTH_ERR;
-//    }
-
-//    return PAM_SUCCESS;
+    cout << "Failure!" << endl;
+    return PAM_PERM_DENIED;
 }
