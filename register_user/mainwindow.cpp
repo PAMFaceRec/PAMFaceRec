@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <stdlib.h>
+
 using namespace std;
 using namespace cv;
 
@@ -58,7 +60,7 @@ void MainWindow::on_timeout()
         ui->label->setPixmap(QPixmap::fromImage(QImage(frame.data, frame.cols,
                                                        frame.rows, frame.step,
                                                        QImage::Format_RGB888)));
-        // Save only 10 face images:
+        // Save only 20 face images:
         if (capture_flag && (counter < 20)) {
             // Crop the face from the image:
             Mat face = gray(faces[0]);
@@ -66,11 +68,11 @@ void MainWindow::on_timeout()
             Mat face_resized;
             cv::resize(face, face_resized, Size(200, 200), 1.0, 1.0, INTER_CUBIC);
             // Create directory:
-            mkdir("training_data", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+            mkdir("/home/kvs/training_data", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
             // Save image as jpg:
-            imwrite("training_data/" + std::to_string(counter) + ".jpg",face_resized);
+            imwrite("/home/kvs/training_data/" + std::to_string(counter) + ".jpg",face_resized);
             // Write to txt file paths to images (it is necessary for training of model):
-            fs << ("training_data/" + std::to_string(counter) + ".jpg") << ";" << 1 << endl;
+            fs << ("/home/kvs/training_data/" + std::to_string(counter) + ".jpg") << ";" << 1 << endl;
             ++counter;
         } else {
             capture_flag = false;
@@ -83,5 +85,5 @@ void MainWindow::on_timeout()
 void MainWindow::on_pushButton_clicked()
 {
     capture_flag = true;
-    fs.open("training_data.txt", std::fstream::out);
+    fs.open("/home/kvs/training_data.txt", std::fstream::out);
 }
