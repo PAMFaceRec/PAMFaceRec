@@ -11,7 +11,7 @@
 #include <QDebug>
 #include "LoggingCategories.h"
 
-#include "ImagePreprocessing.h"
+//#include "ImagePreprocessing.h"
 
 #include <stdlib.h>
 
@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
     flag_neutral(false),
     flag_smile(false),
     counter(0),
-    number_of_images(40)
+    number_of_images(600)
 {
     ui->setupUi(this);
 
@@ -108,7 +108,7 @@ void MainWindow::on_timeout()
         // Save only certain number of face images:
 
         if (flag_neutral) {
-            if (capture_flag && (counter < (3*number_of_images/4))) {
+            if (capture_flag && (counter < (2*number_of_images/4))) {
                 ui->label_3->show();
 
                 // Crop the face from the image:
@@ -117,23 +117,20 @@ void MainWindow::on_timeout()
                 Mat face_resized;
                 cv::resize(face, face_resized, Size(200, 200), 1.0, 1.0, INTER_CUBIC);
 
-                // Save images and labels for face recognition model:
-                images_for_face_model.push_back(face_resized);
+                // Save images for models:
+                images.push_back(face_resized);
+                // Save labels for face recognition model:
                 labels_for_face_model.push_back(1);
-
-                // Save images and labes for smile recognition model:
-                Mat face_resized_f = tan_triggs_preprocessing(face_resized);
-                Mat face_resized_f_reshape = face_resized_f.reshape(0, 1);
-                images_for_smile_model.push_back(face_resized_f_reshape);
+                // Save labes for smile recognition model:
                 labels_for_smile_model.push_back(0);
 
                 ++counter;
-            } else if (capture_flag && !(counter < (3*number_of_images/4))) {
+            } else if (capture_flag && !(counter < (2*number_of_images/4))) {
                 capture_flag = false;
                 flag_neutral = false;
                 counter = 0;
                 ui->label_2->setText("Image capturing has been !");
-                qInfo(logInfo()) << "Finish of image capturing (neutral)";
+                qInfo(logInfo()) << "Finish image capturing (neutral)";
                 ui->pushButton_2->setEnabled(true);
                 ui->pushButton->setEnabled(false);
                 ui->pushButton_3->setEnabled(false);
@@ -142,7 +139,7 @@ void MainWindow::on_timeout()
             }
 
         } else if (flag_smile) {
-            if (capture_flag && (counter < (1*number_of_images/4))) {
+            if (capture_flag && (counter < (2*number_of_images/4))) {
                 ui->label_3->show();
 
                 // Crop the face from the image:
@@ -151,23 +148,20 @@ void MainWindow::on_timeout()
                 Mat face_resized;
                 cv::resize(face, face_resized, Size(200, 200), 1.0, 1.0, INTER_CUBIC);
 
-                // Save images and labels for face recognition model:
-                images_for_face_model.push_back(face_resized);
+                // Save images for models:
+                images.push_back(face_resized);
+                // Save labels for face recognition model:
                 labels_for_face_model.push_back(1);
-
-                // Save images and labes for smile recognition model:
-                Mat face_resized_f = tan_triggs_preprocessing(face_resized);
-                Mat face_resized_f_reshape = face_resized_f.reshape(0, 1);
-                images_for_smile_model.push_back(face_resized_f_reshape);
+                // Save labes for smile recognition model:
                 labels_for_smile_model.push_back(1);
 
                 ++counter;
-            } else if (capture_flag && !(counter < (1*number_of_images/4))) {
+            } else if (capture_flag && !(counter < (2*number_of_images/4))) {
                 capture_flag = false;
                 flag_neutral = false;
                 counter = 0;
                 ui->label_2->setText("Image capture has been done!");
-                qInfo(logInfo()) << "Finish of image capturing (smile)";
+                qInfo(logInfo()) << "Finish image capturing (smile)";
                 ui->pushButton_3->setEnabled(true);
                 ui->pushButton->setEnabled(false);
                 ui->pushButton_2->setEnabled(false);
@@ -183,7 +177,7 @@ void MainWindow::on_pushButton_clicked()
     capture_flag = true;
     flag_neutral = true;
     ui->label_2->setText("Image capture in progress...");
-    qInfo(logInfo()) << "Start of image capturing (neutral)";
+    qInfo(logInfo()) << "Start image capturing (neutral)";
 }
 
 void MainWindow::on_pushButton_2_clicked()
@@ -192,7 +186,7 @@ void MainWindow::on_pushButton_2_clicked()
     capture_flag = true;
     flag_smile = true;
     ui->label_2->setText("Image capture in progress...");
-    qInfo(logInfo()) << "Start of image capturing (smile)";
+    qInfo(logInfo()) << "Start image capturing (smile)";
 }
 
 void MainWindow::on_pushButton_3_clicked()
@@ -209,7 +203,7 @@ void MainWindow::save_models()
     // Create a FaceRecognizer and train it on the given images:
     Ptr<FaceRecognizer> model = LBPHFaceRecognizer::create();
     qInfo(logInfo()) << "Start training face recognition model";
-    model->train(images_for_face_model, labels_for_face_model);
+    model->train(images, labels_for_face_model);
     qInfo(logInfo()) << "Finish training face recognition model";
     model->setThreshold(60);
     qInfo(logInfo()) << "Start saving face recognition model";
@@ -217,28 +211,16 @@ void MainWindow::save_models()
     qInfo(logInfo()) << "Finish saving face recognition model";
 
     // Create a SVM Smile Recognizer and train it on the given images:
-    Mat classes;
-    Mat trainingData;
-    Mat tra_set(number_of_images,40000,CV_32FC1);
-    //Mat tra_set(number_of_images,680400,CV_32FC1);////HOG////
-    Mat(images_for_smile_model).copyTo(trainingData);
-    trainingData = trainingData.reshape(0,number_of_images);
-    trainingData.convertTo(tra_set, CV_32FC1,1.0/255.0);
-    Mat(labels_for_smile_model).copyTo(classes);
-
-    Ptr<SVM> svm = SVM::create();
-    svm->setType(SVM::C_SVC);
-    svm->setKernel(SVM::LINEAR);
-
-    svm->setTermCriteria(TermCriteria(TermCriteria::MAX_ITER, 100, 1e-6));
+    Ptr<FaceRecognizer> model2 = LBPHFaceRecognizer::create();
     qInfo(logInfo()) << "Start training smile recognition model";
-    svm->train(tra_set, ROW_SAMPLE, classes);
+    model2->train(images, labels_for_smile_model);
     qInfo(logInfo()) << "Finish training smile recognition model";
+    model2->setThreshold(1000);
     qInfo(logInfo()) << "Start saving smile recognition model";
-    svm->save("/home/kvs/smile_qwerty_test.xml");
+    model2->save("/home/kvs/smile_qwerty_test.xml");
     qInfo(logInfo()) << "Finish saving smile recognition model";
 
-    ui->label_2->setText("Model training has been done! Close the app!");
+    ui->label_2->setText("Models training has been done! Close the app!");
     ui->pushButton_3->setEnabled(false);
     ui->label_3->setVisible(false);
 }

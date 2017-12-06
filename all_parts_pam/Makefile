@@ -48,8 +48,10 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = main.cpp 
-OBJECTS       = main.o
+SOURCES       = main.cpp \
+		ImagePreprocessing.cpp 
+OBJECTS       = main.o \
+		ImagePreprocessing.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -101,7 +103,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		all_parts_pam.pro  main.cpp
+		all_parts_pam.pro ImagePreprocessing.h main.cpp \
+		ImagePreprocessing.cpp
 QMAKE_TARGET  = all_parts_pam
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = liball_parts_pam.so.1.0.0
@@ -297,6 +300,9 @@ compiler_clean:
 
 main.o: main.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
+
+ImagePreprocessing.o: ImagePreprocessing.cpp ImagePreprocessing.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ImagePreprocessing.o ImagePreprocessing.cpp
 
 ####### Install
 
