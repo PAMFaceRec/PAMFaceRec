@@ -19,7 +19,6 @@
 using namespace std;
 using namespace cv;
 using namespace cv::face;
-using namespace cv::ml;
 
 char get_character_by_brightness(int brightness)
 {
