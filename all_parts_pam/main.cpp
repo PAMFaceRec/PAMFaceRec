@@ -60,7 +60,7 @@ PAM_EXTERN int pam_sm_authenticate( pam_handle_t *pamh, int flags,int argc, cons
     // Load face recognition model:
     Ptr<FaceRecognizer> model = LBPHFaceRecognizer::create();
     model->read("/home/kvs/face_qwerty_test.xml");
-    model->setThreshold(150);
+    model->setThreshold(60);
 
     // Load smile recognition model:
     Ptr<FaceRecognizer> model2 = LBPHFaceRecognizer::create();
