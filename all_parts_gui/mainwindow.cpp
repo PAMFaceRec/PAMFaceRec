@@ -200,7 +200,7 @@ void MainWindow::save_models()
     ui->label_2->setText("Model training in progress...");
     ui->label_3->show();
 
-    // Create a FaceRecognizer and train it on the given images:
+    // Create a Face Recognizer and train it on the given images:
     Ptr<FaceRecognizer> model = LBPHFaceRecognizer::create();
     qInfo(logInfo()) << "Start training face recognition model";
     model->train(images, labels_for_face_model);
@@ -210,7 +210,7 @@ void MainWindow::save_models()
     model->save("/home/kvs/face_qwerty_test.xml");
     qInfo(logInfo()) << "Finish saving face recognition model";
 
-    // Create a SVM Smile Recognizer and train it on the given images:
+    // Create a Smile Recognizer and train it on the given images:
     Ptr<FaceRecognizer> model2 = LBPHFaceRecognizer::create();
     qInfo(logInfo()) << "Start training smile recognition model";
     model2->train(images, labels_for_smile_model);
