@@ -1,14 +1,14 @@
-2017-12-06 18:51:06.521 INF Info: Webcam has been turned on successfully
-2017-12-06 18:51:06.547 INF Info: Haar cascade has been loaded successfully
-2017-12-06 18:51:09.013 INF Info: Start of image capturing (neutral)
-2017-12-06 18:51:13.189 INF Info: Finish of image capturing (neutral)
-2017-12-06 18:51:14.375 INF Info: Start of image capturing (smile)
-2017-12-06 18:51:15.870 INF Info: Finish of image capturing (smile)
-2017-12-06 18:51:17.086 INF Info: Start training face recognition model
-2017-12-06 18:51:17.286 INF Info: Finish training face recognition model
-2017-12-06 18:51:17.286 INF Info: Start saving face recognition model
-2017-12-06 18:51:17.424 INF Info: Finish saving face recognition model
-2017-12-06 18:51:17.428 INF Info: Start training smile recognition model
-2017-12-06 18:51:17.507 INF Info: Finish training smile recognition model
-2017-12-06 18:51:17.507 INF Info: Start saving smile recognition model
-2017-12-06 18:51:17.816 INF Info: Finish saving smile recognition model
+2017-12-06 19:08:09.949 INF Info: Webcam has been turned on successfully
+2017-12-06 19:08:09.980 INF Info: Haar cascade has been loaded successfully
+2017-12-06 19:08:11.680 INF Info: Start image capturing (neutral)
+2017-12-06 19:08:15.775 INF Info: Finish image capturing (neutral)
+2017-12-06 19:08:17.080 INF Info: Start image capturing (smile)
+2017-12-06 19:08:18.511 INF Info: Finish image capturing (smile)
+2017-12-06 19:08:19.449 INF Info: Start training face recognition model
+2017-12-06 19:08:19.658 INF Info: Finish training face recognition model
+2017-12-06 19:08:19.658 INF Info: Start saving face recognition model
+2017-12-06 19:08:19.799 INF Info: Finish saving face recognition model
+2017-12-06 19:08:19.803 INF Info: Start training smile recognition model
+2017-12-06 19:08:19.918 INF Info: Finish training smile recognition model
+2017-12-06 19:08:19.918 INF Info: Start saving smile recognition model
+2017-12-06 19:08:20.363 INF Info: Finish saving smile recognition model
