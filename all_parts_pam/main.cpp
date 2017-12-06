@@ -90,8 +90,6 @@ PAM_EXTERN int pam_sm_authenticate( pam_handle_t *pamh, int flags,int argc, cons
         // Create Mat for ASCII visualisation:
         Mat gray_ASCII;
         resize(gray, gray_ASCII, Size(204, 75));
-        //resize(gray, gray_ASCII, Size(204, 84));
-        //resize(gray, gray_ASCII, Size(80, 24));
 
         // Create a buffer for ASCII symbols:
         std::stringstream ss;
@@ -145,7 +143,6 @@ PAM_EXTERN int pam_sm_authenticate( pam_handle_t *pamh, int flags,int argc, cons
                 cout << "Success!" << endl;
                 return PAM_SUCCESS;
             } else if ((label == 1) && (res != 1)) {
-                //system("clear");
                 cout << "Smile, please!" << endl;
             } else if ((label != 1)) {
                 system("clear");
