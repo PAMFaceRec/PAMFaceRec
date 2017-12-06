@@ -16,6 +16,7 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
@@ -33,7 +34,9 @@ public:
     QLabel *label_2;
     QPushButton *pushButton_2;
     QPushButton *pushButton_3;
+    QLabel *label_3;
     QMenuBar *menuBar;
+    QMenu *menuFrfrfr;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
@@ -62,10 +65,16 @@ public:
         pushButton_3->setObjectName(QStringLiteral("pushButton_3"));
         pushButton_3->setEnabled(false);
         pushButton_3->setGeometry(QRect(710, 310, 131, 27));
+        label_3 = new QLabel(centralWidget);
+        label_3->setObjectName(QStringLiteral("label_3"));
+        label_3->setGeometry(QRect(740, 360, 60, 60));
+        label_3->setScaledContents(true);
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 920, 25));
+        menuFrfrfr = new QMenu(menuBar);
+        menuFrfrfr->setObjectName(QStringLiteral("menuFrfrfr"));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -74,6 +83,8 @@ public:
         statusBar->setObjectName(QStringLiteral("statusBar"));
         MainWindow->setStatusBar(statusBar);
 
+        menuBar->addAction(menuFrfrfr->menuAction());
+
         retranslateUi(MainWindow);
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -81,12 +92,14 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "User registration", 0));
         label->setText(QApplication::translate("MainWindow", "TextLabel", 0));
         pushButton->setText(QApplication::translate("MainWindow", "Capture neutral", 0));
         label_2->setText(QApplication::translate("MainWindow", "<html><head/><body><p><a name=\"result_box\"/>To register a new user, make sure that <a name=\"result_box\"/>your face is detected and press the button &quot;Capture&quot;</p></body></html>", 0));
         pushButton_2->setText(QApplication::translate("MainWindow", "Capture smile", 0));
         pushButton_3->setText(QApplication::translate("MainWindow", "Train models", 0));
+        label_3->setText(QApplication::translate("MainWindow", "TextLabel", 0));
+        menuFrfrfr->setTitle(QApplication::translate("MainWindow", "User registration", 0));
     } // retranslateUi
 
 };

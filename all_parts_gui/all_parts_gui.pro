@@ -15,9 +15,13 @@ TEMPLATE = app
 CONFIG += console c++11
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    LoggingCategories.cpp \
+    ImagePreprocessing.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    LoggingCategories.h \
+    ImagePreprocessing.h
 
 FORMS    += mainwindow.ui
 

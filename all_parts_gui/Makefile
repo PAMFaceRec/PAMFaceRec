@@ -49,9 +49,13 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = main.cpp \
-		mainwindow.cpp moc_mainwindow.cpp
+		mainwindow.cpp \
+		LoggingCategories.cpp \
+		ImagePreprocessing.cpp moc_mainwindow.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
+		LoggingCategories.o \
+		ImagePreprocessing.o \
 		moc_mainwindow.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -110,8 +114,12 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		all_parts_gui.pro mainwindow.h main.cpp \
-		mainwindow.cpp
+		all_parts_gui.pro mainwindow.h \
+		LoggingCategories.h \
+		ImagePreprocessing.h main.cpp \
+		mainwindow.cpp \
+		LoggingCategories.cpp \
+		ImagePreprocessing.cpp
 QMAKE_TARGET  = all_parts_gui
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = all_parts_gui
@@ -281,8 +289,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents mainwindow.h LoggingCategories.h ImagePreprocessing.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp mainwindow.cpp LoggingCategories.cpp ImagePreprocessing.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents mainwindow.ui $(DISTDIR)/
 
 
@@ -334,8 +342,15 @@ main.o: main.cpp mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 mainwindow.o: mainwindow.cpp mainwindow.h \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		LoggingCategories.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o mainwindow.cpp
+
+LoggingCategories.o: LoggingCategories.cpp LoggingCategories.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o LoggingCategories.o LoggingCategories.cpp
+
+ImagePreprocessing.o: ImagePreprocessing.cpp ImagePreprocessing.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ImagePreprocessing.o ImagePreprocessing.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

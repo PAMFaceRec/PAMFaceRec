@@ -48,11 +48,11 @@ private:
     VideoCapture cap;
     CascadeClassifier haar_cascade;
 
-    vector<Mat> images;
-    vector<int> labels;
+    vector<Mat> images_for_face_model;
+    vector<int> labels_for_face_model;
 
-    Mat trainingImages;
-    vector<int> trainingLabels;
+    Mat images_for_smile_model;
+    vector<int> labels_for_smile_model;
 
     bool capture_flag;
     bool flag_neutral;
