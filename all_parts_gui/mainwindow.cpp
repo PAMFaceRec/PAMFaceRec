@@ -126,7 +126,7 @@ void MainWindow::on_timeout()
             } else {
                 flag_neutral = false;
                 counter = 0;
-                ui->label_2->setText("Image capturing has been !");
+                ui->label_2->setText("Image capturing has been done!");
                 qInfo(logInfo()) << "Finish image capturing (neutral)";
                 ui->pushButton_2->setEnabled(true);
                 ui->pushButton->setEnabled(false);
@@ -201,7 +201,7 @@ void MainWindow::save_models()
     qInfo(logInfo()) << "Finish training face recognition model";
     model->setThreshold(60);
     qInfo(logInfo()) << "Start saving face recognition model";
-    model->save("/home/kvs/face_model_test.xml");
+    model->save("/home/kvs/face_model.xml");
     qInfo(logInfo()) << "Finish saving face recognition model";
 
     // Create a Smile Recognizer and train it on the given images:
@@ -211,7 +211,7 @@ void MainWindow::save_models()
     qInfo(logInfo()) << "Finish training smile recognition model";
     model2->setThreshold(1000);
     qInfo(logInfo()) << "Start saving smile recognition model";
-    model2->save("/home/kvs/smile_model_test.xml");
+    model2->save("/home/kvs/smile_model.xml");
     qInfo(logInfo()) << "Finish saving smile recognition model";
 
     ui->label_2->setText("Models training has been done! Close the app!");
