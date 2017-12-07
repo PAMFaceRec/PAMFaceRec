@@ -14,7 +14,6 @@ QScopedPointer<QFile> m_logFile;
 // Declaration of massage handler
 void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg);
 
-
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
