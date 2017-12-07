@@ -158,7 +158,7 @@ void MainWindow::on_timeout()
                 ++counter;
             } else if (capture_flag && !(counter < (2*number_of_images/4))) {
                 capture_flag = false;
-                flag_neutral = false;
+                flag_smile = false;
                 counter = 0;
                 ui->label_2->setText("Image capture has been done!");
                 qInfo(logInfo()) << "Finish image capturing (smile)";
