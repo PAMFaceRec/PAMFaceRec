@@ -95,7 +95,7 @@ void MainWindow::on_timeout()
             // Process face by face:
             Rect face_i = faces[i];
             // Draw a green rectangle around the detected face:
-            rectangle(frame, face_i, CV_RGB(0, 255,0), 1);
+            rectangle(frame, face_i, CV_RGB(0, 255, 0), 1);
         }
         // Convert an image for Qt:
         cvtColor(frame, frame, CV_BGR2RGB);
@@ -106,7 +106,7 @@ void MainWindow::on_timeout()
         // Save only certain number of face images:
 
         if (flag_neutral) {
-            if (counter < (2*number_of_images/4)) {
+            if (counter < (number_of_images / 2)) {
                 ui->label_3->show();
 
                 // Crop the face from the image:
@@ -136,7 +136,7 @@ void MainWindow::on_timeout()
             }
 
         } else if (flag_smile) {
-            if (counter < (2*number_of_images/4)) {
+            if (counter < (number_of_images / 2)) {
                 ui->label_3->show();
 
                 // Crop the face from the image:
