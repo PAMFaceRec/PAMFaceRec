@@ -52,7 +52,6 @@ private:
     vector<int> labels_for_face_model;
     vector<int> labels_for_smile_model;
 
-    bool capture_flag;
     bool flag_neutral;
     bool flag_smile;
 

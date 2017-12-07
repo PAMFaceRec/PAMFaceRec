@@ -22,14 +22,12 @@
 using namespace std;
 using namespace cv;
 using namespace cv::face;
-using namespace cv::ml;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     timer(this),
     cap(0),
-    capture_flag(false),
     flag_neutral(false),
     flag_smile(false),
     counter(0),
@@ -108,7 +106,7 @@ void MainWindow::on_timeout()
         // Save only certain number of face images:
 
         if (flag_neutral) {
-            if (capture_flag && (counter < (2*number_of_images/4))) {
+            if (counter < (2*number_of_images/4)) {
                 ui->label_3->show();
 
                 // Crop the face from the image:
@@ -125,8 +123,7 @@ void MainWindow::on_timeout()
                 labels_for_smile_model.push_back(0);
 
                 ++counter;
-            } else if (capture_flag && !(counter < (2*number_of_images/4))) {
-                capture_flag = false;
+            } else {
                 flag_neutral = false;
                 counter = 0;
                 ui->label_2->setText("Image capturing has been !");
@@ -139,7 +136,7 @@ void MainWindow::on_timeout()
             }
 
         } else if (flag_smile) {
-            if (capture_flag && (counter < (2*number_of_images/4))) {
+            if (counter < (2*number_of_images/4)) {
                 ui->label_3->show();
 
                 // Crop the face from the image:
@@ -156,8 +153,7 @@ void MainWindow::on_timeout()
                 labels_for_smile_model.push_back(1);
 
                 ++counter;
-            } else if (capture_flag && !(counter < (2*number_of_images/4))) {
-                capture_flag = false;
+            } else {
                 flag_smile = false;
                 counter = 0;
                 ui->label_2->setText("Image capture has been done!");
@@ -174,7 +170,6 @@ void MainWindow::on_timeout()
 void MainWindow::on_pushButton_clicked()
 {
     ui->pushButton->setEnabled(false);
-    capture_flag = true;
     flag_neutral = true;
     ui->label_2->setText("Image capture in progress...");
     qInfo(logInfo()) << "Start image capturing (neutral)";
@@ -183,7 +178,6 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_pushButton_2_clicked()
 {
     ui->pushButton_2->setEnabled(false);
-    capture_flag = true;
     flag_smile = true;
     ui->label_2->setText("Image capture in progress...");
     qInfo(logInfo()) << "Start image capturing (smile)";
@@ -207,7 +201,7 @@ void MainWindow::save_models()
     qInfo(logInfo()) << "Finish training face recognition model";
     model->setThreshold(60);
     qInfo(logInfo()) << "Start saving face recognition model";
-    model->save("/home/kvs/face_qwerty_test.xml");
+    model->save("/home/kvs/face_model_test.xml");
     qInfo(logInfo()) << "Finish saving face recognition model";
 
     // Create a Smile Recognizer and train it on the given images:
@@ -217,7 +211,7 @@ void MainWindow::save_models()
     qInfo(logInfo()) << "Finish training smile recognition model";
     model2->setThreshold(1000);
     qInfo(logInfo()) << "Start saving smile recognition model";
-    model2->save("/home/kvs/smile_qwerty_test.xml");
+    model2->save("/home/kvs/smile_model_test.xml");
     qInfo(logInfo()) << "Finish saving smile recognition model";
 
     ui->label_2->setText("Models training has been done! Close the app!");
